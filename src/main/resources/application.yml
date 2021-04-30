@@ -1,0 +1,12 @@
+elasticsearch:
+  urls:
+    - "localhost:9200"
+    - "localhost:9291"
+
+web-clients:
+  clients:
+    elasticsearch:
+      host: "http://localhost:9200"
+      read-time-out-seconds: 25
+      write-time-out-seconds: 25
+      connect-timeout-millis: 25

@@ -1,0 +1,201 @@
+{
+  "settings": {
+    "index": {
+      "max_ngram_diff": 50
+    },
+    "analysis": {
+      "normalizer": {
+        "case_insensitive": {
+          "filter": "lowercase"
+        }
+      },
+      "filter": {
+        "sub_string_filter": {
+          "type": "nGram",
+          "min_gram": 3,
+          "max_gram": 15
+        },
+        "russian_stemmer": {
+          "type": "stemmer",
+          "language": "russian"
+        },
+        "ru_stopwords": {
+          "type": "stop",
+          "ignore_case": true,
+          "stopwords": "а,без,более,бы,был,была,были,было,быть,в,вам,вас,весь,во,вот,все,всего,всех,вы,где,да,даже,для,до,его,ее,если,есть,еще,же,за,здесь,и,из,или,им,их,к,ко,когда,кто,ли,либо,мне,может,мы,на,надо,наш,не,него,нее,нет,ни,них,но,ну,о,об,однако,он,она,они,оно,от,очень,по,под,при,с,со,так,также,такой,там,те,тем,того,тоже,той,только,том,ты,у,уже,хотя,чего,чей,чем,что,чтобы,чье,чья,эта,эти,это,я"
+        },
+        "english_stemmer": {
+          "type": "stemmer",
+          "language": "english"
+        },
+        "english_possessive_stemmer": {
+          "type": "stemmer",
+          "language": "possessive_english"
+        },
+        "english_stop": {
+          "type": "stop",
+          "stopwords": "_english_"
+        }
+      },
+      "analyzer": {
+        "clothes_analyzer": {
+          "filter": [
+            "lowercase",
+            "russian_stemmer",
+            "ru_stopwords",
+            "english_stemmer",
+            "english_possessive_stemmer",
+            "english_stop",
+            "sub_string_filter"
+          ],
+          "char_filter": [
+            "e_char_filter"
+          ],
+          "type": "custom",
+          "tokenizer": "standard"
+        },
+        "clothes_search_analyzer": {
+          "filter": [
+            "lowercase",
+            "russian_stemmer",
+            "ru_stopwords",
+            "english_stemmer",
+            "english_possessive_stemmer",
+            "english_stop"
+          ],
+          "char_filter": [
+            "e_char_filter"
+          ],
+          "type": "custom",
+          "tokenizer": "standard"
+        },
+        "ru_en_char_analyzer": {
+          "filter": [
+            "lowercase",
+            "sub_string_filter"
+          ],
+          "char_filter": [
+            "e_char_filter",
+            "ru_en_char_filter"
+          ],
+          "type": "custom",
+          "tokenizer": "standard"
+        }
+      },
+      "char_filter": {
+        "e_char_filter": {
+          "type": "mapping",
+          "mappings": [
+            "Ё => Е",
+            "ё => е"
+          ]
+        },
+        "ru_en_char_filter": {
+          "type": "mapping",
+          "mappings": [
+            "` => ё",
+            "~ => Ё",
+            "a => ф",
+            "b => и",
+            "c => с",
+            "d => в",
+            "e => у",
+            "f => а",
+            "g => п",
+            "h => р",
+            "i => ш",
+            "j => о",
+            "k => л",
+            "l => д",
+            "m => ь",
+            "n => т",
+            "o => щ",
+            "p => з",
+            "r => к",
+            "s => ы",
+            "t => е",
+            "u => г",
+            "v => м",
+            "w => ц",
+            "x => ч",
+            "y => н",
+            "z => я",
+            "A => Ф",
+            "B => И",
+            "C => С",
+            "D => В",
+            "E => У",
+            "F => А",
+            "G => П",
+            "H => Р",
+            "I => Ш",
+            "J => О",
+            "K => Л",
+            "L => Д",
+            "M => Ь",
+            "N => Т",
+            "O => Щ",
+            "P => З",
+            "R => К",
+            "S => Ы",
+            "T => Е",
+            "U => Г",
+            "V => М",
+            "W => Ц",
+            "X => Ч",
+            "Y => Н",
+            "Z => Я",
+            "[ => х",
+            "{ => Х",
+            "] => ъ",
+            "} => Ъ",
+            "; => ж",
+            ": => Ж",
+            "< => Б",
+            ", => б",
+            ". => ю",
+            "> => Ю"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "gender": {
+        "type": "keyword",
+        "normalizer": "case_insensitive"
+      },
+      "category": {
+        "type": "keyword",
+        "normalizer": "case_insensitive"
+      },
+      "season": {
+        "type": "keyword",
+        "normalizer": "case_insensitive"
+      },
+      "brand": {
+        "type": "text",
+        "analyzer": "clothes_analyzer",
+        "search_analyzer": "clothes_search_analyzer",
+        "fields": {
+          "raw": {
+            "type": "keyword",
+            "normalizer": "case_insensitive"
+          }
+        }
+      },
+      "color": {
+        "type": "text",
+        "analyzer": "clothes_analyzer",
+        "search_analyzer": "clothes_search_analyzer",
+        "fields": {
+          "raw": {
+            "type": "keyword",
+            "normalizer": "case_insensitive"
+          }
+        }
+      }
+    }
+  }
+}
