@@ -97,9 +97,6 @@ public class ClothesQueryCreator {
                             )
                             // для ошибок ракладки клавиатуры
                             .should(
-//                                    QueryBuilders.matchQuery("brand", condition.getQuery())
-//                                            .fuzziness("AUTO")
-//                                            .analyzer("ru_en_char_analyzer")
                                     QueryBuilders.multiMatchQuery(condition.getQuery(), "brand", "color")
                                             .fuzziness("AUTO")
                                             .analyzer("ru_en_char_analyzer")
