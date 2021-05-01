@@ -10,7 +10,8 @@ Demo project for clothes smart search
  - Test Containers
 
 ## Dependencies
-   Required starting elasticsearch on port 9200
+ - Required starting elasticsearch on port 9200
+ - Required docker for running tests (using Testсontainers)
 
 ## Usage
  - start elasticsearch docker image locally: `docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.12.0
@@ -19,6 +20,13 @@ Demo project for clothes smart search
  - tests: `./gradlew clean test`
  - run: `./gradlew bootRun` or `./gradlew clean assemble && cd build/libs && java -jar elasticsearch-example-{VERSION}.jar`
  - docker: `docker build -t elasticsearch-example . && docker run -p 8080:8080 elasticsearch-example`
+
+## Endpoints
+
+Method | Route               | Description
+ :----:| :-------------------| :---------------------------:
+ GET   | /api/clothes/all    | Find all clothes with default search parameters 
+ POST  | /api/clothes/search | Find clothes by conditions
 
 ## Links
 [index settings](src/main/resources/elasticsearch/clothesIndexSettings.json)
