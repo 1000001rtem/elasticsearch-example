@@ -87,7 +87,9 @@
           "type": "mapping",
           "mappings": [
             "Ё => Е",
-            "ё => е"
+            "ё => е",
+            "` => t",
+            "~ => T"
           ]
         },
         "ru_en_char_filter": {

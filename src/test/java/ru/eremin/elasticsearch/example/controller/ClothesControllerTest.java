@@ -377,6 +377,48 @@ public class ClothesControllerTest {
                 .jsonPath("$[*].id").value(containsInAnyOrder("1", "2", "3", "4", "5"));
     }
 
+    @Test
+    public void should_search_with_right_fuzziness() throws JsonProcessingException {
+        List<Clothes> clothes = new ArrayList<>(List.of(
+                createDefaultClothes().setId("1").setBrand("Армани"),
+                createDefaultClothes().setId("2").setBrand("Армани"),
+                createDefaultClothes().setId("3").setBrand("Армани"),
+                createDefaultClothes().setId("4").setBrand("Стон Исланд"),
+                createDefaultClothes().setId("5"),
+                createDefaultClothes().setId("6").setActive(false),
+                createDefaultClothes().setId("7").setActive(false),
+                createDefaultClothes().setId("8").setActive(false),
+                createDefaultClothes().setId("9").setActive(false)
+        ));
+
+        Collections.shuffle(clothes);
+        repository.saveAll(clothes).collectList().block();
+
+        final Condition condition1 = new Condition()
+                .setQuery("ман");
+
+        final ClothesSearchRequest request = new ClothesSearchRequest().setConditions(List.of(condition1));
+
+        client.post()
+                .uri("/api/clothes/search")
+                .contentType(APPLICATION_JSON)
+                .body(BodyInserters.fromValue(mapper.writeValueAsString(request)))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .consumeWith(exchangeResult -> {
+                            ObjectWriter prettyWriter = mapper.writerWithDefaultPrettyPrinter();
+                            try {
+                                log.info("RESPONSE:\n" + prettyWriter.writeValueAsString(mapper.readTree(exchangeResult.getResponseBody())));
+                            } catch (IOException e) {
+                                log.error(null, e);
+                            }
+                        }
+                )
+                .jsonPath("$.length()").isEqualTo("3")
+                .jsonPath("$[*].id").value(containsInAnyOrder("1", "2", "3"));
+    }
+
     private Clothes createDefaultClothes() {
         return new Clothes()
                 .setGender("Female")
