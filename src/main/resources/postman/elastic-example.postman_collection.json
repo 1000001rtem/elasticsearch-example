@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "71c01d43-f959-4f82-9253-f6c99a5f751c",
+		"name": "elastic-example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"conditions\": [\r\n        {\r\n            \"gender\": \"male\",\r\n            \"query\": \"ман\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/clothes/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"clothes",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "explain",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                {\r\n                    \"bool\": {\r\n                        \"should\": [\r\n                            {\r\n                                \"bool\": {\r\n                                    \"must\": [\r\n                                       \r\n                                        {\r\n                                            \"bool\": {\r\n                                                \"should\": [\r\n                                                    {\r\n                                                        \"multi_match\": {\r\n                                                            \"query\": \"ман\",\r\n                                                            \"fields\": [\r\n                                                                \"brand^1.0\",\r\n                                                                \"color^1.0\"\r\n                                                            ],\r\n                                                            \"type\": \"best_fields\",\r\n                                                            \"operator\": \"OR\",\r\n                                                            \"slop\": 0,\r\n                                                            \"prefix_length\": 0,\r\n                                                            \"max_expansions\": 50,\r\n                                                            \"zero_terms_query\": \"NONE\",\r\n                                                            \"auto_generate_synonyms_phrase_query\": true,\r\n                                                            \"fuzzy_transpositions\": true,\r\n                                                            \"boost\": 1.0\r\n                                                        }\r\n                                                    },\r\n                                                    {\r\n                                                        \"multi_match\": {\r\n                                                            \"query\": \"ман\",\r\n                                                            \"fields\": [\r\n                                                                \"brand^1.0\",\r\n                                                                \"color^1.0\"\r\n                                                            ],\r\n                                                            \"type\": \"best_fields\",\r\n                                                            \"operator\": \"OR\",\r\n                                                            \"analyzer\": \"ru_en_char_analyzer\",\r\n                                                            \"slop\": 0,\r\n                                                            \"prefix_length\": 0,\r\n                                                            \"max_expansions\": 50,\r\n                                                            \"zero_terms_query\": \"NONE\",\r\n                                                            \"auto_generate_synonyms_phrase_query\": true,\r\n                                                            \"fuzzy_transpositions\": true,\r\n                                                            \"boost\": 1.0\r\n                                                        }\r\n                                                    }\r\n                                                ],\r\n                                                \"adjust_pure_negative\": true,\r\n                                                \"boost\": 1.0\r\n                                            }\r\n                                        }\r\n                                    ],\r\n                                    \"adjust_pure_negative\": true,\r\n                                    \"boost\": 1.0\r\n                                }\r\n                            }\r\n                        ],\r\n                        \"adjust_pure_negative\": true,\r\n                        \"boost\": 1.0\r\n                    }\r\n                },\r\n                {\r\n                    \"bool\": {\r\n                        \"must\": [\r\n                            {\r\n                                \"term\": {\r\n                                    \"active\": {\r\n                                        \"value\": true,\r\n                                        \"boost\": 1.0\r\n                                    }\r\n                                }\r\n                            }\r\n                        ],\r\n                        \"adjust_pure_negative\": true,\r\n                        \"boost\": 1.0\r\n                    }\r\n                }\r\n            ],\r\n            \"adjust_pure_negative\": true,\r\n            \"boost\": 1.0\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9200/clothes/_explain/98276d67-1c43-4082-857d-0a2b63f85d60",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"clothes",
+						"_explain",
+						"98276d67-1c43-4082-857d-0a2b63f85d60"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "analyze",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"field\": \"brand\", \r\n  \"text\": \"Стон Исланд\",\r\n  \"analyzer\": \"clothes_analyzer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9200/clothes/_analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"clothes",
+						"_analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "open",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/clothes/_open",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"clothes",
+						"_open"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "close",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/clothes/_close",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"clothes",
+						"_close"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get settings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/clothes/_settings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"clothes",
+						"_settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "settings",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"settings\": {\r\n    \"index\": {\r\n      \"max_ngram_diff\": 50\r\n    },\r\n    \"analysis\": {\r\n      \"normalizer\": {\r\n        \"case_insensitive\": {\r\n          \"filter\": \"lowercase\"\r\n        }\r\n      },\r\n      \"filter\": {\r\n        \"sub_string_filter\": {\r\n          \"type\": \"nGram\",\r\n          \"min_gram\": 3,\r\n          \"max_gram\": 15\r\n        },\r\n        \"russian_stemmer\": {\r\n          \"type\": \"stemmer\",\r\n          \"language\": \"russian\"\r\n        },\r\n        \"ru_stopwords\": {\r\n          \"type\": \"stop\",\r\n          \"ignore_case\": true,\r\n          \"stopwords\": \"а,без,более,бы,был,была,были,было,быть,в,вам,вас,весь,во,вот,все,всего,всех,вы,где,да,даже,для,до,его,ее,если,есть,еще,же,за,здесь,и,из,или,им,их,к,ко,когда,кто,ли,либо,мне,может,мы,на,надо,наш,не,него,нее,нет,ни,них,но,ну,о,об,однако,он,она,они,оно,от,очень,по,под,при,с,со,так,также,такой,там,те,тем,того,тоже,той,только,том,ты,у,уже,хотя,чего,чей,чем,что,чтобы,чье,чья,эта,эти,это,я\"\r\n        },\r\n        \"english_stemmer\": {\r\n          \"type\": \"stemmer\",\r\n          \"language\": \"english\"\r\n        },\r\n        \"english_possessive_stemmer\": {\r\n          \"type\": \"stemmer\",\r\n          \"language\": \"possessive_english\"\r\n        },\r\n        \"english_stop\": {\r\n          \"type\": \"stop\",\r\n          \"stopwords\": \"_english_\"\r\n        }\r\n      },\r\n      \"analyzer\": {\r\n        \"clothes_analyzer\": {\r\n          \"filter\": [\r\n            \"lowercase\",\r\n            \"russian_stemmer\",\r\n            \"ru_stopwords\",\r\n            \"english_stemmer\",\r\n            \"english_possessive_stemmer\",\r\n            \"english_stop\",\r\n            \"sub_string_filter\"\r\n          ],\r\n          \"char_filter\": [\r\n            \"e_char_filter\"\r\n          ],\r\n          \"type\": \"custom\",\r\n          \"tokenizer\": \"standard\"\r\n        },\r\n        \"clothes_search_analyzer\": {\r\n          \"filter\": [\r\n            \"lowercase\",\r\n            \"russian_stemmer\",\r\n            \"ru_stopwords\",\r\n            \"english_stemmer\",\r\n            \"english_possessive_stemmer\",\r\n            \"english_stop\"\r\n          ],\r\n          \"char_filter\": [\r\n            \"e_char_filter\"\r\n          ],\r\n          \"type\": \"custom\",\r\n          \"tokenizer\": \"standard\"\r\n        },\r\n        \"ru_en_char_analyzer\": {\r\n          \"filter\": [\r\n            \"lowercase\",\r\n            \"sub_string_filter\"\r\n          ],\r\n          \"char_filter\": [\r\n            \"e_char_filter\",\r\n            \"ru_en_char_filter\"\r\n          ],\r\n          \"type\": \"custom\",\r\n          \"tokenizer\": \"standard\"\r\n        }\r\n      },\r\n      \"char_filter\": {\r\n        \"e_char_filter\": {\r\n          \"type\": \"mapping\",\r\n          \"mappings\": [\r\n            \"Ё => Е\",\r\n            \"ё => е\",\r\n            \"` => t\",\r\n            \"~ => T\"\r\n          ]\r\n        },\r\n        \"ru_en_char_filter\": {\r\n          \"type\": \"mapping\",\r\n          \"mappings\": [\r\n            \"` => ё\",\r\n            \"~ => Ё\",\r\n            \"a => ф\",\r\n            \"b => и\",\r\n            \"c => с\",\r\n            \"d => в\",\r\n            \"e => у\",\r\n            \"f => а\",\r\n            \"g => п\",\r\n            \"h => р\",\r\n            \"i => ш\",\r\n            \"j => о\",\r\n            \"k => л\",\r\n            \"l => д\",\r\n            \"m => ь\",\r\n            \"n => т\",\r\n            \"o => щ\",\r\n            \"p => з\",\r\n            \"r => к\",\r\n            \"s => ы\",\r\n            \"t => е\",\r\n            \"u => г\",\r\n            \"v => м\",\r\n            \"w => ц\",\r\n            \"x => ч\",\r\n            \"y => н\",\r\n            \"z => я\",\r\n            \"A => Ф\",\r\n            \"B => И\",\r\n            \"C => С\",\r\n            \"D => В\",\r\n            \"E => У\",\r\n            \"F => А\",\r\n            \"G => П\",\r\n            \"H => Р\",\r\n            \"I => Ш\",\r\n            \"J => О\",\r\n            \"K => Л\",\r\n            \"L => Д\",\r\n            \"M => Ь\",\r\n            \"N => Т\",\r\n            \"O => Щ\",\r\n            \"P => З\",\r\n            \"R => К\",\r\n            \"S => Ы\",\r\n            \"T => Е\",\r\n            \"U => Г\",\r\n            \"V => М\",\r\n            \"W => Ц\",\r\n            \"X => Ч\",\r\n            \"Y => Н\",\r\n            \"Z => Я\",\r\n            \"[ => х\",\r\n            \"{ => Х\",\r\n            \"] => ъ\",\r\n            \"} => Ъ\",\r\n            \"; => ж\",\r\n            \": => Ж\",\r\n            \"< => Б\",\r\n            \", => б\",\r\n            \". => ю\",\r\n            \"> => Ю\"\r\n          ]\r\n        }\r\n      }\r\n    }\r\n  },\r\n  \"mappings\": {\r\n    \"properties\": {\r\n      \"gender\": {\r\n        \"type\": \"keyword\",\r\n        \"normalizer\": \"case_insensitive\"\r\n      },\r\n      \"category\": {\r\n        \"type\": \"keyword\",\r\n        \"normalizer\": \"case_insensitive\"\r\n      },\r\n      \"season\": {\r\n        \"type\": \"keyword\",\r\n        \"normalizer\": \"case_insensitive\"\r\n      },\r\n      \"brand\": {\r\n        \"type\": \"text\",\r\n        \"analyzer\": \"clothes_analyzer\",\r\n        \"search_analyzer\": \"clothes_search_analyzer\",\r\n        \"fields\": {\r\n          \"raw\": {\r\n            \"type\": \"keyword\",\r\n            \"normalizer\": \"case_insensitive\"\r\n          }\r\n        }\r\n      },\r\n      \"color\": {\r\n        \"type\": \"text\",\r\n        \"analyzer\": \"clothes_analyzer\",\r\n        \"search_analyzer\": \"clothes_search_analyzer\",\r\n        \"fields\": {\r\n          \"raw\": {\r\n            \"type\": \"keyword\",\r\n            \"normalizer\": \"case_insensitive\"\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9200/clothes",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"clothes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
